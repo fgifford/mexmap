@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "title": "CJNG Retaliatory Violence — Zihuatanejo Area, February 22, 2026",
+    "subtitle": "Incidents following the killing of \"El Mencho\" in Tapalpa, Jalisco",
+    "bounds": [[17.31, -102.25], [17.97, -101.35]],
+    "center": [17.72, -101.65],
+    "zoom": 10,
+    "infoBox": {
+      "summary": "8–10+ vehicles burned",
+      "timeRange": "2:00 PM – 6:20 PM, Feb 22, 2026",
+      "vehicleTypes": "Cargo trucks, transit Urvans (Las Dos Costas), private cars, motorcycle",
+      "status": "All roads cleared by 6:20 PM",
+      "coordNote": "Coordinates sourced from INEGI, Mapcarta, PueblosAmerica, postal code databases. Some approximate."
+    }
+  },
+  "incidents": [
+    {
+      "id": 1,
+      "lat": 17.7333,
+      "lng": -101.6000,
+      "type": "burning",
+      "size": "large",
+      "title": "1. Cargo truck burned — Libramiento a Pantla / La Salitrera",
+      "time": "~2:00 PM (first incident of the day)",
+      "detail": "Armed men forced driver of a cargo truck out at gunpoint and set truck on fire. La Salitrera is a hamlet near Pantla, about 10 km NW of Zihuatanejo on the bypass road.",
+      "source": "Coords: INEGI/Mapcarta — La Salitrera at 17°44'N, 101°36'W"
+    },
+    {
+      "id": 2,
+      "lat": 17.6445,
+      "lng": -101.5470,
+      "type": "burning",
+      "size": "normal",
+      "title": "2. Parked car burned — Colonia Nuevo Amanecer",
+      "time": "Shortly after 2:00 PM",
+      "detail": "Armed men with gasoline set fire to a parked automobile alongside Bulevar Paseo de Zihuatanejo in Colonia Nuevo Amanecer.",
+      "source": "Coords: Approx. — Col. Nuevo Amanecer along Blvd. Paseo de Zihuatanejo"
+    },
+    {
+      "id": 3,
+      "lat": 17.6415,
+      "lng": -101.5440,
+      "type": "burning",
+      "size": "normal",
+      "title": "3. Vehicles burned — Colonia La Noria (x2 incidents)",
+      "time": "Afternoon + second fire ~6:00 PM",
+      "detail": "Compact vehicles set on fire alongside Blvd. Paseo de Zihuatanejo in Col. La Noria. At ~6:00 PM, another automobile burned near the La Noria market.",
+      "source": "Coords: Approx. — Col. La Noria, east side of Zihuatanejo"
+    },
+    {
+      "id": 4,
+      "lat": 17.9010,
+      "lng": -101.8100,
+      "type": "burning",
+      "size": "large",
+      "title": "4. Two 'Las Dos Costas' transit Urvans + private car — Carretera near Lagunillas / San Jerónimo",
+      "time": "Afternoon",
+      "detail": "Two Urvan-type public transit vans of the 'Las Dos Costas' company + one private automobile burned on the highway near Lagunillas and San Jerónimo.",
+      "source": "Coords: Midpoint between INEGI-verified Lagunillas and San Jerónimo La Caliza"
+    },
+    {
+      "id": 5,
+      "lat": 17.6330,
+      "lng": -101.5140,
+      "type": "attempted",
+      "size": "normal",
+      "title": "5. ATTEMPTED Urvan burning — Airport route / Chedraui",
+      "time": "~3:00 PM",
+      "detail": "Armed men attempted to burn a public transit Urvan in front of the Chedraui supermarket on the road toward the airport. Firefighters responded quickly and PREVENTED full destruction.",
+      "source": "Coords: Approx. — Chedraui supermarket on airport road, SE of centro"
+    },
+    {
+      "id": 6,
+      "lat": 17.6385,
+      "lng": -101.5525,
+      "type": "burning",
+      "size": "normal",
+      "title": "6. Car burned — Calle Palmas, Centro (downtown)",
+      "time": "~5:00 PM",
+      "detail": "Compact automobile set on fire on Calle Palmas in downtown Zihuatanejo. Massive multi-agency response.",
+      "source": "Coords: Calle Palmas, Zihuatanejo Centro — confirmed downtown street"
+    },
+    {
+      "id": "7a",
+      "lat": 17.635,
+      "lng": -101.555,
+      "type": "burning",
+      "size": "normal",
+      "title": "7a. Vehicle burned — El Embalse",
+      "time": "Afternoon",
+      "detail": "Vehicle burning reported in Colonia El Embalse. Located ~1 km west of Zihuatanejo centro.",
+      "source": "Coords: PueblosAmerica/INEGI — El Embalse, ~1km W of centro, CP 40894"
+    },
+    {
+      "id": "7b",
+      "lat": 17.6369,
+      "lng": -101.4769,
+      "type": "burning",
+      "size": "normal",
+      "title": "7b. Vehicle burned — El Coacoyul",
+      "time": "Afternoon",
+      "detail": "Vehicle burning reported in El Coacoyul, an outlying community ~8 km east of Zihuatanejo centro.",
+      "source": "Coords: INEGI/database.earth — El Coacoyul at 17.6369°N, 101.4769°W"
+    },
+    {
+      "id": "7c",
+      "lat": 17.645,
+      "lng": -101.540,
+      "type": "burning",
+      "size": "normal",
+      "title": "7c. Vehicle burned — Agua de Correa",
+      "time": "Afternoon",
+      "detail": "Armed men with gasoline set fire to a vehicle in Agua de Correa, ~2 km east of Zihuatanejo centro.",
+      "source": "Coords: PueblosAmerica — Agua de Correa, ~2km E of Zihuatanejo centro"
+    },
+    {
+      "id": "7d",
+      "lat": 17.640,
+      "lng": -101.553,
+      "type": "burning",
+      "size": "normal",
+      "title": "7d. Vehicle burned — Laguna Las Salinas area",
+      "time": "Afternoon",
+      "detail": "Vehicle burning reported at Las Salinas. The Laguna Las Salinas is a lagoon in central Zihuatanejo.",
+      "source": "Coords: UNAM project data / Hotel Las Salinas — central Zihuatanejo lagoon area"
+    },
+    {
+      "id": 8,
+      "lat": 17.638,
+      "lng": -101.553,
+      "type": "burning",
+      "size": "normal",
+      "title": "8. Motorcycle burned — location unspecified",
+      "time": "Afternoon",
+      "detail": "At least one motorcycle was among the vehicles burned. Exact location within the municipality not specified.",
+      "source": "Source: Interacción Noticias"
+    },
+    {
+      "id": "hq",
+      "lat": 17.642,
+      "lng": -101.542,
+      "type": "hq_attack",
+      "size": "normal",
+      "title": "Las Dos Costas Transit Co. — HQ Raided",
+      "time": "Afternoon",
+      "detail": "Armed men went to the company headquarters, forcibly removed parked transit vehicles, and burned them on the street.",
+      "source": "Coords: Approx. — Zihuatanejo urban area"
+    }
+  ],
+  "shutdowns": [
+    {
+      "id": "s1",
+      "lat": 17.654,
+      "lng": -101.592,
+      "title": "Sam's Club / Walmart — Ixtapa",
+      "detail": "Closed preemptively to avoid being targeted by armed groups."
+    },
+    {
+      "id": "s2",
+      "lat": 17.643,
+      "lng": -101.548,
+      "title": "Soriana + all Oxxo stores — Zihuatanejo",
+      "detail": "Closed preemptively. All Oxxo convenience stores in the area also shuttered."
+    },
+    {
+      "id": "s3",
+      "lat": 17.657,
+      "lng": -101.600,
+      "title": "Ixtapa Hotel Zone — Shelter-in-place",
+      "detail": "Resorts sheltered guests. Occupancy was 86.8% in Ixtapa."
+    }
+  ],
+  "disruptions": [
+    {
+      "id": "d1",
+      "lat": 17.9569,
+      "lng": -102.2003,
+      "type": "disruption",
+      "title": "Lázaro Cárdenas, Michoacán — Port & Transit Disruption",
+      "time": "Feb 22, 2026",
+      "detail": "C5 Michoacán confirmed traffic disruptions. SAT office closed. DHL reported reduced freight volumes. Trucking capacity tightened as carriers refused to send drivers into western Mexico.",
+      "source": "Sources: C5 Michoacán, CNBC, Azteca Bajío, Excélsior"
+    },
+    {
+      "id": "d2",
+      "lat": 17.9400,
+      "lng": -102.1600,
+      "type": "port",
+      "title": "Port of Lázaro Cárdenas — Freight Disruption",
+      "detail": "One of Mexico's largest Pacific ports and a key entry point for precursor chemicals from Asia. DHL reported lower-than-normal volumes. Port operations continued at reduced capacity.",
+      "source": "Source: CNBC"
+    }
+  ]
+}
