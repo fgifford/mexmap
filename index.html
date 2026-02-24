@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zihuatanejo Area — CJNG Violence Incidents, Feb 22, 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; }
+  #header {
+    background: #16213e;
+    padding: 16px 24px;
+    border-bottom: 2px solid #e74c3c;
+  }
+  #header h1 { font-size: 18px; color: #fff; margin-bottom: 4px; }
+  #header p { font-size: 13px; color: #aaa; }
+  #map { width: 100%; height: calc(100vh - 130px); }
+  #legend {
+    background: #16213e;
+    padding: 10px 24px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: 1px solid #333;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot {
+    width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff;
+    display: inline-block; flex-shrink: 0;
+  }
+  .leaflet-popup-content-wrapper {
+    background: #1a1a2e !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #e74c3c !important;
+    border-radius: 8px !important;
+    max-width: 340px;
+  }
+  .leaflet-popup-tip { background: #1a1a2e !important; border: 1px solid #e74c3c !important; }
+  .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
+  .leaflet-popup-content h3 { color: #e74c3c; font-size: 14px; margin-bottom: 6px; }
+  .leaflet-popup-content .time { color: #f39c12; font-weight: 600; }
+  .leaflet-popup-content .detail { color: #ccc; margin-top: 4px; }
+  .leaflet-popup-content .coords { color: #888; font-size: 11px; margin-top: 6px; font-style: italic; }
+  #loading {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: #16213e; color: #e74c3c; padding: 20px 30px; border-radius: 8px;
+    border: 1px solid #e74c3c; font-size: 14px; z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>CJNG Retaliatory Violence — Zihuatanejo Area, February 22, 2026</h1>
+  <p>Incidents following the killing of "El Mencho" in Tapalpa, Jalisco &nbsp;|&nbsp; 20 mi south of ZIH Airport to Lázaro Cárdenas</p>
+</div>
+
+<div id="map"></div>
+
+<div id="legend">
+  <span style="color:#aaa; font-weight:600;">LEGEND:</span>
+  <div class="legend-item"><span class="legend-dot" style="background:#e74c3c;"></span> Vehicle burning (confirmed)</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#f39c12;"></span> Attempted / partially prevented</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#3498db;"></span> Commerce shutdown / shelter-in-place</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9b59b6;"></span> Transit company HQ attacked</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#f1c40f;"></span> Port/transit disruption</div>
+</div>
+
+<div id="loading">Loading incident data...</div>
+
+<script>
+var map = L.map('map', {
+  center: [17.72, -101.65],
+  zoom: 10,
+  zoomControl: true
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 18
+}).addTo(map);
+
+L.control.scale({ imperial: true, metric: true }).addTo(map);
+
+function makeIcon(color, size) {
+  return L.divIcon({
+    className: 'custom-icon',
+    html: '<div style="width:' + size + 'px; height:' + size + 'px; border-radius:50%; background:' + color + '; border:2px solid #fff; box-shadow: 0 0 8px ' + color + '88, 0 0 20px ' + color + '44;"></div>',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2]
+  });
+}
+
+var icons = {
+  burning:       makeIcon('#e74c3c', 18),
+  burning_lg:    makeIcon('#e74c3c', 22),
+  attempted:     makeIcon('#f39c12', 18),
+  shutdown:      makeIcon('#3498db', 14),
+  hq_attack:     makeIcon('#9b59b6', 18),
+  disruption:    makeIcon('#f1c40f', 18),
+  port:          makeIcon('#3498db', 14)
+};
+
+function getIcon(item) {
+  if (item.type === 'burning' && item.size === 'large') return icons.burning_lg;
+  if (item.type === 'burning') return icons.burning;
+  if (item.type === 'attempted') return icons.attempted;
+  if (item.type === 'hq_attack') return icons.hq_attack;
+  if (item.type === 'disruption') return icons.disruption;
+  if (item.type === 'port') return icons.port;
+  return icons.shutdown;
+}
+
+function makePopup(item) {
+  var html = '<h3>' + item.title + '</h3>';
+  if (item.time) html += '<div class="time">\u23F1 ' + item.time + '</div>';
+  html += '<div class="detail">' + item.detail + '</div>';
+  if (item.source) html += '<div class="coords">' + item.source + '</div>';
+  return html;
+}
+
+fetch('incidents.json')
+  .then(function(response) {
+    if (!response.ok) throw new Error('Failed to load incidents.json');
+    return response.json();
+  })
+  .then(function(data) {
+    var el = document.getElementById('loading');
+    if (el) el.remove();
+
+    if (data.meta && data.meta.bounds) {
+      map.fitBounds(data.meta.bounds);
+    }
+
+    if (data.incidents) {
+      data.incidents.forEach(function(inc) {
+        L.marker([inc.lat, inc.lng], { icon: getIcon(inc) })
+          .addTo(map)
+          .bindPopup(makePopup(inc));
+      });
+    }
+
+    if (data.shutdowns) {
+      data.shutdowns.forEach(function(s) {
+        L.marker([s.lat, s.lng], { icon: icons.shutdown })
+          .addTo(map)
+          .bindPopup('<h3>' + s.title + '</h3><div class="detail">' + s.detail + '</div>');
+      });
+    }
+
+    if (data.disruptions) {
+      data.disruptions.forEach(function(d) {
+        L.marker([d.lat, d.lng], { icon: getIcon(d) })
+          .addTo(map)
+          .bindPopup(makePopup(d));
+      });
+    }
+
+    if (data.meta && data.meta.infoBox) {
+      var info = L.control({ position: 'topright' });
+      info.onAdd = function() {
+        var div = L.DomUtil.create('div');
+        div.style.cssText = 'background:#16213e; color:#e0e0e0; padding:12px 16px; border-radius:8px; border:1px solid #e74c3c; font-size:12px; max-width:240px; line-height:1.5;';
+        var ib = data.meta.infoBox;
+        div.innerHTML =
+          '<strong style="color:#e74c3c;">' + ib.summary + '</strong><br>' +
+          '<span style="color:#aaa;">' + ib.timeRange + '</span><br><br>' +
+          '<span style="color:#ccc;">' + ib.vehicleTypes + '</span><br><br>' +
+          '<span style="color:#f39c12;">' + ib.status + '</span><br><br>' +
+          '<span style="color:#888; font-size:11px;">' + ib.coordNote + '</span>';
+        return div;
+      };
+      info.addTo(map);
+    }
+  })
+  .catch(function(err) {
+    var el = document.getElementById('loading');
+    if (el) el.textContent = 'Error loading data: ' + err.message;
+    console.error(err);
+  });
+</script>
+
+</body>
+</html>
