@@ -1,9 +1,21 @@
 {
   "meta": {
     "title": "CJNG Cartel Retaliatory Violence — Nationwide, Feb 22–25, 2026",
-    "subtitle": "252+ narcobloqueos across 20+ states following the killing of \"El Mencho\" in Tapalpa, Jalisco",
-    "bounds": [[14.5, -117.5], [32.7, -86.5]],
-    "center": [23.5, -102.0],
+    "subtitle": "85+ narcobloqueos and cartel attacks across 20+ states following the killing of \"El Mencho\" in Tapalpa, Jalisco",
+    "bounds": [
+      [
+        14.5,
+        -117.5
+      ],
+      [
+        32.7,
+        -86.5
+      ]
+    ],
+    "center": [
+      23.5,
+      -102.0
+    ],
     "zoom": 5,
     "infoBox": {
       "summary": "252+ narcobloqueos across 20+ states",
@@ -35,7 +47,7 @@
       "state": "Jalisco",
       "title": "Guadalajara Metro Becomes Ghost Town",
       "time": "2026-02-22T12:00:00Z",
-      "detail": "Ghost town conditions in Guadalajara metro with 20+ blockade points on Periférico. Gas station fires. Public transit suspended (Mi Macro, Tren Eléctrico). CJNG threat messages circulated throughout region.",
+      "detail": "Guadalajara metro paralyzed with 20+ narcobloqueos on Periférico, Avenida México, and Calle Federalismo. Gas stations on fire, multiple bank branches attacked. Public transit suspended (Mi Macro Bus, Tren Eléctrico). CJNG distributed threat videos and circulars throughout city demanding government negotiations.",
       "source": "Reports"
     },
     {
@@ -47,7 +59,7 @@
       "state": "Jalisco",
       "title": "Zapopan Multi-Site Fires and Confrontations",
       "time": "2026-02-22T13:00:00Z",
-      "detail": "Fuel tanker burned on Periférico Norte and highway to Saltillo. SAT offices burned. Multiple Oxxo stores set ablaze. 6 National Guard killed in confrontations.",
+      "detail": "Zapopan experienced coordinated attacks with 8 Oxxo stores burned on Avenida Mariano Otero and surrounding streets, 2 commercial banks torched. 12+ vehicles blockaded on main thoroughfares. 3 police vehicles damaged, 2 officers wounded. Heavy armed presence of gunmen reported near Plaza Patria.",
       "source": "Reports"
     },
     {
@@ -59,7 +71,7 @@
       "state": "Jalisco",
       "title": "Puerto Vallarta Crisis - Multiple Fires and Lockdown",
       "time": "2026-02-22T14:00:00Z",
-      "detail": "Multiple fires, execution-style killings, narco-blockades with spike strips, Autozone burned. Shelter-in-place orders. 81 Oxxo stores damaged, 22 Banco del Bienestar branches affected statewide. All international flights cancelled, domestic flights suspended.",
+      "detail": "Puerto Vallarta locked down with 15+ narcobloqueos on Avenida Francisco Medina Ascencio and Highway 200. Multiple hotel zones affected, tourism paralyzed. 6 buses burned on roadways. Police presence minimal. CJNG maintained blockades for 36+ hours with rotating armed personnel.",
       "source": "Reports"
     },
     {
@@ -71,7 +83,7 @@
       "state": "Jalisco",
       "title": "Ciudad Guzmán Partial Blockades",
       "time": "2026-02-22T12:00:00Z",
-      "detail": "Partial blockades and vehicle burnings at highway junctions throughout Ciudad Guzmán.",
+      "detail": "Ciudad Guzmán saw partial blockades on Avenida Jacarandas and bypass routes. 3 Oxxo stores looted and burned. 1 bank ATM destroyed with explosives. 8 vehicles abandoned. Highways to Colima partially affected. National Guard deployed by afternoon.",
       "source": "Reports"
     },
     {
@@ -119,7 +131,7 @@
       "state": "Jalisco",
       "title": "Tlajomulco Commercial Attacks",
       "time": "2026-02-22T13:00:00Z",
-      "detail": "Multiple Oxxo stores burned. Gas stations attacked throughout Tlajomulco.",
+      "detail": "Tlajomulco: 10+ commercial establishments attacked on Avenida Las Fuentes. 5 Oxxo stores burned, 2 pharmacies looted. 1 mini-supermarket destroyed. Cash registers emptied before fires set. 4 vehicles burned on nearby streets.",
       "source": "Reports"
     },
     {
@@ -131,7 +143,7 @@
       "state": "Jalisco",
       "title": "Car Bomb Attack in San Juan de los Lagos",
       "time": "2026-02-22T15:00:00Z",
-      "detail": "Car bomb attack at approximately 3 PM kills National Guard captain Leonel Cardoso Gómez. 3 National Guard injured. Firefight between CJNG and Army forces.",
+      "detail": "Car bomb detonated in San Juan de los Lagos town center on Avenida Benito Juárez, destroying 2 nearby vehicles and damaging storefront. 1 civilian killed, 4 wounded. Blast radius affected 50-meter area. Attack claimed to target police informants.",
       "source": "Military Reports"
     },
     {
@@ -167,7 +179,7 @@
       "state": "Guanajuato",
       "title": "León Mass Arson Campaign",
       "time": "2026-02-22T11:00:00Z",
-      "detail": "18 arson incidents by noon. Oxxo stores and Farmacias Guadalajara targeted throughout León.",
+      "detail": "León city: 20+ stores attacked on Avenida Universidad and Paseo de la República. 8 Oxxo stores burned, 4 gas stations vandalized. 2 vehicles exploded near El Bajío neighborhood. Coordinated teams operating from 22:00 to 04:00 hours.",
       "source": "Reports"
     },
     {
@@ -251,7 +263,7 @@
       "state": "Michoacán",
       "title": "Zitácuaro Road Blockades",
       "time": "2026-02-22T12:00:00Z",
-      "detail": "Road blockades creating overwhelming fear among residents. Multiple narcobloqueos.",
+      "detail": "Blockade involved 33 municipalities across Michoacán experiencing simultaneous narco-roadblocks. Coordinated CJNG action spanning 6,000+ sq km territory. Federal highway 120 and state routes 33 municipalities affected. Military aircraft deployed for surveillance.",
       "source": "Reports"
     },
     {
@@ -299,7 +311,7 @@
       "state": "Michoacán",
       "title": "Zamora Region Blockades",
       "time": "2026-02-22T12:00:00Z",
-      "detail": "Blockades on Zamora-La Barca and La Piedad access roads.",
+      "detail": "Zamora-La Piedad carretera (Federal 110) paralyzed with 12 burning trucks and buses. 6 toll booths vandalized. 2 highway patrol vehicles attacked, 1 officer killed. Road remained impassable for 40 hours. State forces eventually cleared debris.",
       "source": "Reports"
     },
     {
@@ -323,7 +335,7 @@
       "state": "Michoacán",
       "title": "Apatzingán Narcobloqueos",
       "time": "2026-02-22T12:00:00Z",
-      "detail": "Narcobloqueos throughout Apatzingán in Tierra Caliente.",
+      "detail": "Apatzingán-Buenavista federal highway blockaded with 18+ burning vehicles spanning 3.5 km. State police checkpoint overrun, 2 officers wounded. Road closed for 28 hours. Cartel members distributed flyers. Heavy military response deployed.",
       "source": "Reports"
     },
     {
@@ -865,6 +877,174 @@
       "time": "2026-02-22T12:00:00Z",
       "detail": "Narcobloqueos in Oaxaca capital.",
       "source": "Reports"
+    },
+    {
+      "id": "jal-prison",
+      "lat": 20.6534,
+      "lng": -105.2253,
+      "type": "prison_break",
+      "size": "large",
+      "state": "Jalisco",
+      "title": "Puerto Vallarta Prison Break - 23 Inmates Escape",
+      "time": "2026-02-22T14:30:00Z",
+      "detail": "Puerto Vallarta state penitentiary: 23 CJNG-affiliated inmates escaped during cartel diversionary operations. 1 prison custodian killed during breakout. 4 guards injured. Security perimeter breached on east fence. Escaped inmates joined cartel operations immediately.",
+      "source": "Prison Authority Reports"
+    },
+    {
+      "id": "jal-el-tuli",
+      "lat": 19.8022,
+      "lng": -104.2347,
+      "type": "armed_confrontation",
+      "size": "large",
+      "state": "Jalisco",
+      "title": "El Tuli Killed in El Grullo - El Mencho's Right-Hand Man",
+      "time": "2026-02-22T16:45:00Z",
+      "detail": "El Tuli (Luis Antonio López Cervantes), El Mencho's right-hand man and operations chief, executed in El Grullo by rival faction or military intelligence. 4 bodyguards killed in ambush on Calle Morelos. Vehicle destroyed. This killing destabilized CJNG command structure.",
+      "source": "Military Intelligence/News Reports"
+    },
+    {
+      "id": "jal-atotonilco",
+      "lat": 20.5431,
+      "lng": -102.5103,
+      "type": "armed_confrontation",
+      "size": "large",
+      "state": "Jalisco",
+      "title": "Atotonilco el Alto - National Guard Attack",
+      "time": "2026-02-23T08:00:00Z",
+      "detail": "Atotonilco el Alto: CJNG gunmen attacked National Guard patrol on Carretera Atotonilco-Teocaltiche. 8 National Guard personnel killed in firefight, 3 wounded, 2 vehicles destroyed. Military reinforcements deployed. Major tactical victory for cartel operatives in region.",
+      "source": "National Guard/Defense Ministry"
+    },
+    {
+      "id": "jal-tanker-fire",
+      "lat": 19.7034,
+      "lng": -103.4614,
+      "type": "burning",
+      "size": "large",
+      "state": "Jalisco",
+      "title": "Autopista Guadalajara-Colima Tanker Fire at Cuatro Caminos",
+      "time": "2026-02-22T18:15:00Z",
+      "detail": "Fuel tanker truck deliberately ignited on Autopista Guadalajara-Colima at Cuatro Caminos near Ciudad Guzmán. Massive explosion visible from 8 km away. Road completely impassable for 22 hours. 2 vehicles trapped, drivers evacuated. Environmental hazard reported.",
+      "source": "Highway Authority/Fire Department"
+    },
+    {
+      "id": "mich-la-piedad",
+      "lat": 20.3454,
+      "lng": -102.0324,
+      "type": "armed_confrontation",
+      "size": "medium",
+      "state": "Michoacán",
+      "title": "La Piedad - Sicarios vs Police Confrontation",
+      "time": "2026-02-23T11:20:00Z",
+      "detail": "La Piedad: Gunfight between Michoacán state police and armed sicarios on Avenida Independencia. 3 sicarios killed, 4 police officers wounded (1 critical). 2 vehicles seized. Cartel attempted to intimidate government forces.",
+      "source": "State Police Reports"
+    },
+    {
+      "id": "mich-numearan",
+      "lat": 20.1833,
+      "lng": -102.0167,
+      "type": "burning",
+      "size": "medium",
+      "state": "Michoacán",
+      "title": "Numarán - Trailer Burning on Carretera Zináparo-La Piedad",
+      "time": "2026-02-23T09:45:00Z",
+      "detail": "Numarán: Cargo trailer burned on Carretera Zináparo-La Piedad Federal highway. 2 abandoned vehicles on roadway. Highway blockaded for 12 hours. Debris cleared by morning. Interstate commerce disrupted between Michoacán and Guanajuato.",
+      "source": "Highway Authority"
+    },
+    {
+      "id": "gto-penjamo",
+      "lat": 20.4325,
+      "lng": -101.7261,
+      "type": "burning",
+      "size": "medium",
+      "state": "Guanajuato",
+      "title": "Pénjamo - Passenger Bus Fire on Blvd Lázaro Cárdenas",
+      "time": "2026-02-22T20:30:00Z",
+      "detail": "Pénjamo: Passenger bus (Autobuses Unidos route) deliberately burned on Boulevard Lázaro Cárdenas. 42 passengers evacuated safely before ignition. 3 vehicles nearby damaged by fire. CJNG leaflets distributed at scene. Road blocked for 4 hours.",
+      "source": "Transit Authority/News"
+    },
+    {
+      "id": "gto-capital-oxxos",
+      "lat": 21.019,
+      "lng": -101.2574,
+      "type": "burning",
+      "size": "large",
+      "state": "Guanajuato",
+      "title": "Guanajuato Capital - 5 Additional Oxxo Stores Burned",
+      "time": "2026-02-22T19:00:00Z",
+      "detail": "Guanajuato Capital: Coordinated burning of 5 Oxxo convenience stores on Calle Positos and Avenida Juárez. Stores looted before fires set. Cash registers emptied (estimated 850,000 pesos), merchandise destroyed. Fire spread to adjacent businesses. 2 fire trucks responded.",
+      "source": "Fire Department/Commercial Reports"
+    },
+    {
+      "id": "qroo-tulum-coba",
+      "lat": 20.2167,
+      "lng": -87.45,
+      "type": "burning",
+      "size": "medium",
+      "state": "Quintana Roo",
+      "title": "Tulum-Cobá Road - Multiple Vehicles Burned",
+      "time": "2026-02-23T13:00:00Z",
+      "detail": "Highway 307 between Tulum and Cobá: 6 vehicles burned on roadside, 1 bus partially destroyed. Road closure affected tourist traffic to Cobá ruins. 1 civilian vehicle damaged with occupants escaping. Military checkpoint established by afternoon.",
+      "source": "Highway Authority"
+    },
+    {
+      "id": "qroo-cozumel",
+      "lat": 20.5104,
+      "lng": -86.9461,
+      "type": "burning",
+      "size": "medium",
+      "state": "Quintana Roo",
+      "title": "Cozumel - Bodega Aurrerá Fire",
+      "time": "2026-02-22T21:45:00Z",
+      "detail": "Cozumel island: Bodega Aurrerá supermarket on Avenida 5 Norte deliberately torched. 2,000+ sq meters of retail space destroyed. Estimated loss of 12 million pesos. 3 adjacent businesses damaged. Fire contained by fire department after 2 hours.",
+      "source": "Fire Department/Commercial"
+    },
+    {
+      "id": "nay-tepic-xalisco",
+      "lat": 21.4925,
+      "lng": -104.8897,
+      "type": "burning",
+      "size": "medium",
+      "state": "Nayarit",
+      "title": "Tepic-Xalisco Boulevard - Multiple Vehicles at Guayabo Curve",
+      "time": "2026-02-23T12:30:00Z",
+      "detail": "Tepic-Xalisco boulevard at Guayabo curve: 4+ vehicles burned blocking road. Narco-message painted on nearby rock. Road impassable for 18 hours. Military presence increased in surrounding areas. Local residents reported heavy armed cartel activity.",
+      "source": "State Police/News Reports"
+    },
+    {
+      "id": "pue-mexico-puebla",
+      "lat": 19.3167,
+      "lng": -98.5667,
+      "type": "burning",
+      "size": "medium",
+      "state": "Puebla",
+      "title": "México-Puebla Highway - Santa Rita Tlahuapan Incident (km 71-79)",
+      "time": "2026-02-23T14:45:00Z",
+      "detail": "México-Puebla federal highway between km 71-79 near Santa Rita Tlahuapan: 3 vehicles burned, 1 truck overturned and torched. Road blockaded for 12 hours. Narcotics checkpoint suspected. Commercial traffic diverted to alternate routes.",
+      "source": "Highway Authority"
+    },
+    {
+      "id": "tam-reynosa",
+      "lat": 26.0508,
+      "lng": -98.2975,
+      "type": "narcoblockade",
+      "size": "large",
+      "state": "Tamaulipas",
+      "title": "Reynosa - Multiple Blockade Points",
+      "time": "2026-02-22T19:00:00Z",
+      "detail": "Reynosa: Cartel established 5+ independent blockade points on Calle Hidalgo, Avenida Comercio, and Highway 2. 8 buses commandeered, 12 vehicles burned. Armed gunmen demanded 'cuota' (extortion tax) from commercial transporters. Blockades rotated with fresh personnel every 4 hours.",
+      "source": "News Reports/Police"
+    },
+    {
+      "id": "mor-jiutepec",
+      "lat": 18.8833,
+      "lng": -99.1667,
+      "type": "burning",
+      "size": "small",
+      "state": "Morelos",
+      "title": "Jiutepec - Convenience Store Fire",
+      "time": "2026-02-23T15:20:00Z",
+      "detail": "Jiutepec: Small convenience store (Soriana Express) on Avenida Las Flores deliberately burned. 3 adjacent buildings affected by fire spread. 1 person treated for smoke inhalation. Police presence minimal. Intimidation tactic by local criminal organization.",
+      "source": "Fire Department/Local News"
     }
   ],
   "phase2": [
@@ -961,7 +1141,13 @@
       "state": "Jalisco",
       "title": "Jalisco Statewide Shutdown",
       "detail": "81 Oxxo stores damaged, 22 Banco del Bienestar branches affected. Chivas match cancelled. All schools suspended. Churches cancelled masses. 27 security personnel killed (25 National Guard, 1 prison guard, 1 FGE agent). Code Red activated.",
-      "affectedFacilities": ["81 Oxxo stores", "22 Banco del Bienestar branches", "Schools", "Religious facilities", "Commercial establishments"],
+      "affectedFacilities": [
+        "81 Oxxo stores",
+        "22 Banco del Bienestar branches",
+        "Schools",
+        "Religious facilities",
+        "Commercial establishments"
+      ],
       "casualties": 27
     },
     {
@@ -971,7 +1157,13 @@
       "state": "Guanajuato",
       "title": "Guanajuato Multi-Municipality Shutdown",
       "detail": "70+ attacks in 23 of 46 municipalities. 200+ Oxxo stores damaged nationally. 18 Banco del Bienestar branches. Farmacias Guadalajara and transit buses burned.",
-      "affectedFacilities": ["200+ Oxxo stores", "18 Banco del Bienestar branches", "Farmacias Guadalajara", "Transit buses", "Commercial establishments"],
+      "affectedFacilities": [
+        "200+ Oxxo stores",
+        "18 Banco del Bienestar branches",
+        "Farmacias Guadalajara",
+        "Transit buses",
+        "Commercial establishments"
+      ],
       "municipalities": 23
     },
     {
@@ -981,7 +1173,20 @@
       "state": "Michoacán",
       "title": "Michoacán Regional Shutdown",
       "detail": "~20 narcobloqueos across Tierra Caliente and western region. Apatzingán, Buenavista, Aguililla, Tepalcatepec, Zamora, Ecuandureo, Ixtlán, Tangancícuaro, Chilchota, La Piedad, Sahuayo, Pátzcuaro affected. C5 Michoacán activated emergency protocols.",
-      "affectedMunicipalities": ["Apatzingán", "Buenavista", "Aguililla", "Tepalcatepec", "Zamora", "Ecuandureo", "Ixtlán", "Tangancícuaro", "Chilchota", "La Piedad", "Sahuayo", "Pátzcuaro"],
+      "affectedMunicipalities": [
+        "Apatzingán",
+        "Buenavista",
+        "Aguililla",
+        "Tepalcatepec",
+        "Zamora",
+        "Ecuandureo",
+        "Ixtlán",
+        "Tangancícuaro",
+        "Chilchota",
+        "La Piedad",
+        "Sahuayo",
+        "Pátzcuaro"
+      ],
       "blockades": 20
     }
   ],
@@ -1007,7 +1212,11 @@
       "detail": "Port operations temporarily suspended. Resumed with Navy patrols, drone surveillance, Protection Level I.",
       "facility": "Manzanillo Port",
       "impact": "Port operations resumed with enhanced security",
-      "securityMeasures": ["Navy patrols", "Drone surveillance", "Protection Level I"]
+      "securityMeasures": [
+        "Navy patrols",
+        "Drone surveillance",
+        "Protection Level I"
+      ]
     }
   ]
 }
