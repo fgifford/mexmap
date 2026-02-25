@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pueblos Mágicos de México</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #1a1a2e; }
+  #map { width: 100%; height: 100vh; background: #1a1a2e; }
+
+  .info-panel {
+    position: absolute; top: 16px; right: 16px; z-index: 1000;
+    background: rgba(255,255,255,0.95); border-radius: 12px;
+    padding: 16px 20px; min-width: 220px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2); backdrop-filter: blur(8px);
+  }
+  .info-panel h2 { font-size: 14px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .info-panel .state-name { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 2px; }
+  .info-panel .count { font-size: 15px; color: #888; }
+  .info-panel .hint { font-size: 13px; color: #aaa; font-style: italic; }
+
+  .title-panel {
+    position: absolute; top: 16px; left: 16px; z-index: 1000;
+    background: rgba(255,255,255,0.95); border-radius: 12px;
+    padding: 16px 20px; max-width: 320px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+  .title-panel h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; line-height: 1.2; }
+  .title-panel p { font-size: 13px; color: #888; margin-top: 4px; }
+
+  .legend {
+    position: absolute; bottom: 24px; left: 16px; z-index: 1000;
+    background: rgba(255,255,255,0.95); border-radius: 12px;
+    padding: 14px 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+  .legend h3 { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .legend-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 13px; color: #444; }
+  .legend-swatch { width: 20px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25) !important;
+  }
+  .leaflet-popup-content { margin: 14px 16px !important; }
+  .popup-title { font-size: 17px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+  .popup-count { font-size: 13px; color: #888; margin-bottom: 10px; }
+  .popup-list { list-style: none; padding: 0; margin: 0; max-height: 260px; overflow-y: auto; }
+  .popup-list li {
+    padding: 5px 0; font-size: 14px; color: #333;
+    border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 6px;
+  }
+  .popup-list li:last-child { border-bottom: none; }
+  .popup-list li::before { content: "\2726"; color: #e63946; font-size: 10px; }
+  .popup-none { font-size: 14px; color: #aaa; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="title-panel">
+  <h1>Pueblos Magicos de Mexico</h1>
+  <p>177 magic towns across 31 states. Click a state to see its towns.</p>
+</div>
+
+<div class="info-panel" id="info">
+  <h2>State</h2>
+  <div class="hint">Hover over a state</div>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<script>
+const pueblosMagicos = {
+  "Aguascalientes": ["Calvillo","Pabellon de Hidalgo","Real de Asientos","San Jose de Gracia"],
+  "Baja California": ["San Felipe","Tecate"],
+  "Baja California Sur": ["Loreto","Santa Rosalia","Todos Santos"],
+  "Campeche": ["Candelaria","Isla Aguada","Palizada"],
+  "Chiapas": ["Chiapa de Corzo","Comitan de Dominguez","Copainala","Ocozocoautla de Espinosa","Palenque","San Cristobal de las Casas"],
+  "Chihuahua": ["Batopilas","Casas Grandes","Creel","Guachochi","Hidalgo del Parral"],
+  "Coahuila de Zaragoza": ["Arteaga","Candela","Cuatro Cienegas","General Cepeda","Guerrero","Muzquiz","Parras de la Fuente","Viesca"],
+  "Colima": ["Comala"],
+  "Ciudad de Mexico": [],
+  "Durango": ["Mapimi","Nombre de Dios"],
+  "Guanajuato": ["Comonfort","Dolores Hidalgo","Jalpa de Canovas","Mineral de Pozos","Salvatierra","Yuriria"],
+  "Guerrero": ["Ixcateopan de Cuauhtemoc","Taxco de Alarcon","Zihuatanejo"],
+  "Hidalgo": ["Acaxochitlan","Huasca de Ocampo","Huichapan","Metztitlan","Mineral del Chico","Real del Monte","Tecozautla","Zempoala","Zimapan"],
+  "Jalisco": ["Ajijic","Cocula","Lagos de Moreno","Mascota","Mazamitla","San Sebastian del Oeste","Sayula","Talpa de Allende","Tapalpa","Temacapulin","Tequila","Tlaquepaque"],
+  "Mexico": ["Aculco","El Oro","Ixtapan de la Sal","Jilotepec","Malinalco","Metepec","Otumba","San Juan Teotihuacan","San Martin de las Piramides","Tepotzotlan","Tonatico","Valle de Bravo","Villa del Carbon"],
+  "Michoacan de Ocampo": ["Angangueo","Cotija","Cuitzeo del Porvenir","Jiquilpan","Paracho","Patzcuaro","Santa Clara del Cobre","Tacambaro","Tlalpujahua","Tzintzuntzan"],
+  "Morelos": ["Tepoztlan","Tlaltizapan de Zapata","Tlayacapan","Xochitepec"],
+  "Nayarit": ["Ahuacatlan","Amatlan de Canas","Compostela","Ixtlan del Rio","Jala","Mexcaltitan","Puerto Balleto","San Blas","Sayulita"],
+  "Nuevo Leon": ["Bustamante","General Teran","General Zaragoza","Linares","Santiago"],
+  "Oaxaca": ["Capulalpam de Mendez","Huautla de Jimenez","Mazunte","San Pablo Villa de Mitla","San Pedro y San Pablo Teposcolula","Santa Catarina Juquila"],
+  "Puebla": ["Atlixco","Chignahuapan","Cholula","Cuetzalan del Progreso","Huauchinango","Huejotzingo","Pahuatlan","Tetela de Ocampo","Teziutlan","Tlatlauquitepec","Xicotepec de Juarez","Zacatlan"],
+  "Queretaro": ["Amealco de Bonfil","Bernal","Cadereyta de Montes","Jalpan de Serra","Pinal de Amoles","San Joaquin","Tequisquiapan"],
+  "Quintana Roo": ["Bacalar","Cozumel","Isla Mujeres","Tulum"],
+  "San Luis Potosi": ["Aquismon","Ciudad del Maiz","Real de Catorce","Santa Maria del Rio","Tierra Nueva","Xilitla"],
+  "Sinaloa": ["Cosala","El Fuerte","El Rosario","Mocorito","San Ignacio"],
+  "Sonora": ["Alamos","Magdalena de Kino","San Carlos Nuevo Guaymas","Ures"],
+  "Tabasco": ["Frontera","Tapijulapa","Teapa"],
+  "Tamaulipas": ["Mier","Tula"],
+  "Tlaxcala": ["Huamantla","Ixtenco","Tlaxco"],
+  "Veracruz de Ignacio de la Llave": ["Coatepec","Cordoba","Coscomatepec","Naolinco de Victoria","Orizaba","Papantla de Olarte","Xico","Zozocolco de Hidalgo"],
+  "Yucatan": ["Espita","Izamal","Mani","Motul","Sisal","Tekax","Valladolid"],
+  "Zacatecas": ["Guadalupe","Jerez de Garcia Salinas","Nochistlan de Mejia","Pinos","Sombrerete","Teul de Gonzalez Ortega","Villanueva"]
+};
+
+// Alternate name mapping for GeoJSON matching
+const nameAliases = {
+  "Coahuila": "Coahuila de Zaragoza",
+  "Estado de Mexico": "Mexico",
+  "Estado de México": "Mexico",
+  "México": "Mexico",
+  "Michoacán": "Michoacan de Ocampo",
+  "Michoacán de Ocampo": "Michoacan de Ocampo",
+  "Michoacan": "Michoacan de Ocampo",
+  "Querétaro": "Queretaro",
+  "Veracruz": "Veracruz de Ignacio de la Llave",
+  "Veracruz de Ignacio de la Llave": "Veracruz de Ignacio de la Llave",
+  "San Luis Potosí": "San Luis Potosi",
+  "Nuevo León": "Nuevo Leon",
+  "Yucatán": "Yucatan",
+  "Coahuila de Zaragoza": "Coahuila de Zaragoza",
+  "Ciudad de México": "Ciudad de Mexico",
+  "Distrito Federal": "Ciudad de Mexico"
+};
+
+function lookupState(name) {
+  if (pueblosMagicos[name] !== undefined) return name;
+  // strip accents
+  const stripped = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (pueblosMagicos[stripped] !== undefined) return stripped;
+  // check aliases
+  if (nameAliases[name]) return nameAliases[name];
+  if (nameAliases[stripped]) return nameAliases[stripped];
+  return null;
+}
+
+function getCount(name) {
+  const key = lookupState(name);
+  return key ? pueblosMagicos[key].length : 0;
+}
+
+function getTowns(name) {
+  const key = lookupState(name);
+  return key ? pueblosMagicos[key] : [];
+}
+
+// Color scale
+const colors = ["#f1f1f1","#fde8d0","#f9c49a","#f4a066","#e8723a","#d94a1e","#b5301a","#8b1a1a","#5c0d0d"];
+const breaks = [0, 1, 2, 3, 5, 7, 9, 11, 13];
+
+function getColor(count) {
+  for (let i = breaks.length - 1; i >= 0; i--) {
+    if (count >= breaks[i]) return colors[i];
+  }
+  return colors[0];
+}
+
+// Build legend
+const legendEl = document.getElementById('legend');
+const labels = ["0","1","2","3-4","5-6","7-8","9-10","11-12","13+"];
+let legendHTML = '<h3>Pueblos Magicos</h3>';
+for (let i = 0; i < colors.length; i++) {
+  legendHTML += `<div class="legend-row"><div class="legend-swatch" style="background:${colors[i]}"></div>${labels[i]}</div>`;
+}
+legendEl.innerHTML = legendHTML;
+
+// Map
+const map = L.map('map', {
+  center: [23.6, -102.5],
+  zoom: 5,
+  minZoom: 4,
+  maxZoom: 8,
+  zoomControl: false,
+  attributionControl: false
+});
+
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+// Dark tile layer (optional, can remove for cleaner look)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+const infoPanel = document.getElementById('info');
+
+function updateInfo(name, count) {
+  if (!name) {
+    infoPanel.innerHTML = '<h2>State</h2><div class="hint">Hover over a state</div>';
+  } else {
+    infoPanel.innerHTML = `<h2>State</h2><div class="state-name">${name}</div><div class="count">${count} Pueblo${count !== 1 ? 's' : ''} Magico${count !== 1 ? 's' : ''}</div>`;
+  }
+}
+
+let geojsonLayer;
+let selectedLayer = null;
+
+function defaultStyle(feature) {
+  const count = getCount(feature.properties.name);
+  return {
+    fillColor: getColor(count),
+    weight: 1.5,
+    color: '#fff',
+    fillOpacity: 0.85
+  };
+}
+
+function highlightStyle() {
+  return {
+    weight: 2.5,
+    color: '#fff',
+    fillOpacity: 1
+  };
+}
+
+function onEachFeature(feature, layer) {
+  const name = feature.properties.name;
+  const count = getCount(name);
+  const towns = getTowns(name);
+
+  layer.on('mouseover', function(e) {
+    if (selectedLayer !== layer) {
+      layer.setStyle(highlightStyle());
+      layer.bringToFront();
+      if (selectedLayer) selectedLayer.bringToFront();
+    }
+    updateInfo(name, count);
+  });
+
+  layer.on('mouseout', function(e) {
+    if (selectedLayer !== layer) {
+      geojsonLayer.resetStyle(layer);
+    }
+    if (!selectedLayer) updateInfo(null);
+    else {
+      const sn = selectedLayer.feature.properties.name;
+      updateInfo(sn, getCount(sn));
+    }
+  });
+
+  layer.on('click', function(e) {
+    if (selectedLayer && selectedLayer !== layer) {
+      geojsonLayer.resetStyle(selectedLayer);
+    }
+    selectedLayer = layer;
+    layer.setStyle({ weight: 3, color: '#ffe066', fillOpacity: 1 });
+    layer.bringToFront();
+
+    let popupHTML = `<div class="popup-title">${name}</div>`;
+    if (towns.length > 0) {
+      popupHTML += `<div class="popup-count">${towns.length} Pueblo${towns.length !== 1 ? 's' : ''} Magico${towns.length !== 1 ? 's' : ''}</div>`;
+      popupHTML += '<ul class="popup-list">';
+      towns.sort().forEach(t => { popupHTML += `<li>${t}</li>`; });
+      popupHTML += '</ul>';
+    } else {
+      popupHTML += '<div class="popup-none">No Pueblos Magicos</div>';
+    }
+
+    layer.bindPopup(popupHTML, { maxWidth: 260, maxHeight: 320 }).openPopup();
+
+    layer.on('popupclose', function() {
+      geojsonLayer.resetStyle(layer);
+      selectedLayer = null;
+      updateInfo(null);
+    });
+  });
+}
+
+// Load GeoJSON
+fetch('https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHigh.json')
+  .then(r => r.json())
+  .then(data => {
+    geojsonLayer = L.geoJSON(data, {
+      style: defaultStyle,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+  });
+</script>
+</body>
+</html>
