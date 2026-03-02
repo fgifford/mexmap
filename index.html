@@ -72,6 +72,7 @@
   .state-count { color: #888; font-size: 11px; }
   .filter-divider { border-top: 1px solid #444; margin: 8px 0; }
   .filter-section-label { color: #8e44ad; font-weight: 600; font-size: 12px; margin-top: 4px; }
+  .day-label { color: #f39c12; font-weight: 600; }
   /* Phase 2 pulse animation */
   @keyframes phase2pulse {
     0% { box-shadow: 0 0 4px #8e44ad88, 0 0 8px #8e44ad44; }
@@ -140,6 +141,14 @@ var typeColors = {
   other:       '#95a5a6'
 };
 
+// Day display names
+var dayNames = {
+  '2026-02-22': 'Sat Feb 22',
+  '2026-02-23': 'Sun Feb 23',
+  '2026-02-24': 'Mon Feb 24',
+  '2026-02-25': 'Tue Feb 25'
+};
+
 // Icon factory
 function makeIcon(color, size, isPhase2) {
   var borderColor = isPhase2 ? '#8e44ad' : 'rgba(255,255,255,0.8)';
@@ -160,16 +169,26 @@ function makeIcon(color, size, isPhase2) {
 function getIcon(item, isPhase2) {
   var color = typeColors[item.type] || '#95a5a6';
   var size = item.size === 'large' ? 20 : 14;
-  if (isPhase2) size += 2; // slightly larger for phase 2
+  if (isPhase2) size += 2;
   return makeIcon(color, size, isPhase2);
+}
+
+// Extract date string from ISO time field
+function getDateKey(item) {
+  if (item.time && item.time.length >= 10) {
+    return item.time.substring(0, 10);
+  }
+  return '2026-02-22'; // default for items without time
 }
 
 function makePopup(item, isPhase2) {
   var html = '<h3>' + item.title + '</h3>';
-  if (isPhase2) {
-    html += '<span class="phase-tag phase2-tag">Phase 2 — Feb 24+</span> ';
+  var dateKey = getDateKey(item);
+  var isP2 = dateKey >= '2026-02-24';
+  if (isP2) {
+    html += '<span class="phase-tag phase2-tag">Phase 2 \u2014 Feb 24+</span> ';
   } else {
-    html += '<span class="phase-tag phase1-tag">Phase 1 — Feb 22–23</span> ';
+    html += '<span class="phase-tag phase1-tag">Phase 1 \u2014 Feb 22\u201323</span> ';
   }
   if (item.state) html += '<span class="state-tag">' + item.state + '</span> ';
   if (item.time) html += '<div class="time">\u23F1 ' + item.time + '</div>';
@@ -178,13 +197,13 @@ function makePopup(item, isPhase2) {
   return html;
 }
 
-// Store layer groups by state for filtering
-var stateLayers = {};
-var phase2Layer = L.layerGroup().addTo(map);
+// Layer groups: one per day, plus state layers for the filter
+var dayLayers = {};   // keyed by date string e.g. '2026-02-22'
+var stateLayers = {}; // keyed by state name — each holds markers for that state
 var allMarkers = [];
 
 // Fetch data and render
-fetch('incidents.json')
+fetch('incidents.json?v=6')
   .then(function(response) {
     if (!response.ok) throw new Error('Failed to load incidents.json');
     return response.json();
@@ -197,30 +216,45 @@ fetch('incidents.json')
       map.fitBounds(data.meta.bounds, { padding: [30, 30] });
     }
 
-    function addMarker(item, category, isPhase2) {
+    // Ensure day layer groups exist and are added to map
+    function ensureDayLayer(dateKey) {
+      if (!dayLayers[dateKey]) {
+        dayLayers[dateKey] = L.layerGroup().addTo(map);
+      }
+      return dayLayers[dateKey];
+    }
+
+    function addMarker(item, category) {
+      var dateKey = getDateKey(item);
+      var isPhase2 = dateKey >= '2026-02-24';
       var marker = L.marker([item.lat, item.lng], { icon: getIcon(item, isPhase2) })
         .bindPopup(makePopup(item, isPhase2));
 
-      if (isPhase2) {
-        marker.addTo(phase2Layer);
-      } else {
-        var state = item.state || category || 'Other';
-        if (!stateLayers[state]) {
-          stateLayers[state] = L.layerGroup().addTo(map);
-        }
-        marker.addTo(stateLayers[state]);
+      // Store state and date on the marker for filtering
+      marker._dateKey = dateKey;
+      marker._state = item.state || category || 'Other';
+
+      // Add to the day layer
+      var layer = ensureDayLayer(dateKey);
+      marker.addTo(layer);
+
+      // Track state membership (for counts in the filter)
+      if (!stateLayers[marker._state]) {
+        stateLayers[marker._state] = [];
       }
+      stateLayers[marker._state].push(marker);
+
       allMarkers.push(marker);
     }
 
-    // Render Phase 1 incidents
+    // Render all incidents
     if (data.incidents) {
-      data.incidents.forEach(function(inc) { addMarker(inc, 'Incidents', false); });
+      data.incidents.forEach(function(inc) { addMarker(inc, 'Incidents'); });
     }
 
     // Render Phase 2 incidents
     if (data.phase2) {
-      data.phase2.forEach(function(inc) { addMarker(inc, 'Phase 2', true); });
+      data.phase2.forEach(function(inc) { addMarker(inc, 'Phase 2'); });
     }
 
     // Render shutdowns
@@ -228,14 +262,14 @@ fetch('incidents.json')
       data.shutdowns.forEach(function(s) {
         s.type = s.type || 'shutdown';
         s.state = s.state || 'Shutdowns';
-        addMarker(s, 'Shutdowns', false);
+        addMarker(s, 'Shutdowns');
       });
     }
 
     // Render disruptions
     if (data.disruptions) {
       data.disruptions.forEach(function(d) {
-        addMarker(d, 'Disruptions', false);
+        addMarker(d, 'Disruptions');
       });
     }
 
@@ -257,38 +291,75 @@ fetch('incidents.json')
       info.addTo(map);
     }
 
-    // State filter control (top left)
-    var states = Object.keys(stateLayers).sort();
+    // Build filter control (top left)
+    var sortedDays = Object.keys(dayLayers).sort();
+    var sortedStates = Object.keys(stateLayers).sort();
+
     var filter = L.control({ position: 'topleft' });
     filter.onAdd = function() {
       var div = L.DomUtil.create('div', 'filter-control');
-      var html = '<h4>Filter by State</h4>';
+      var html = '<h4>Filter by Day</h4>';
 
-      // Phase 2 toggle at top
-      var p2count = 0;
-      phase2Layer.eachLayer(function() { p2count++; });
-      html += '<label style="color:#8e44ad; font-weight:600;"><input type="checkbox" checked data-layer="phase2" style="accent-color:#8e44ad;"> Phase 2 — Feb 24+ <span class="state-count">(' + p2count + ')</span></label>';
-      html += '<div class="filter-divider"></div>';
-
-      states.forEach(function(state) {
+      // Day toggles
+      sortedDays.forEach(function(dateKey) {
         var count = 0;
-        stateLayers[state].eachLayer(function() { count++; });
+        dayLayers[dateKey].eachLayer(function() { count++; });
+        var label = dayNames[dateKey] || dateKey;
+        var isP2 = dateKey >= '2026-02-24';
+        var labelStyle = isP2 ? 'color:#8e44ad; font-weight:600;' : 'color:#ccc;';
+        var accentStyle = isP2 ? 'accent-color:#8e44ad;' : 'accent-color:#e74c3c;';
+        html += '<label style="' + labelStyle + '"><input type="checkbox" checked data-day="' + dateKey + '" style="' + accentStyle + '"> ' + label + ' <span class="state-count">(' + count + ')</span></label>';
+      });
+
+      html += '<div class="filter-divider"></div>';
+      html += '<h4>Filter by State</h4>';
+
+      // State toggles
+      sortedStates.forEach(function(state) {
+        var count = stateLayers[state].length;
         html += '<label><input type="checkbox" checked data-state="' + state + '"> ' + state + ' <span class="state-count">(' + count + ')</span></label>';
       });
+
       div.innerHTML = html;
 
-      div.addEventListener('change', function(e) {
-        if (e.target.type === 'checkbox') {
-          var state = e.target.getAttribute('data-state');
-          var layer = e.target.getAttribute('data-layer');
-          if (layer === 'phase2') {
-            if (e.target.checked) { map.addLayer(phase2Layer); }
-            else { map.removeLayer(phase2Layer); }
-          } else if (state) {
-            if (e.target.checked) { map.addLayer(stateLayers[state]); }
-            else { map.removeLayer(stateLayers[state]); }
+      // Track which days and states are enabled
+      var dayEnabled = {};
+      sortedDays.forEach(function(d) { dayEnabled[d] = true; });
+      var stateEnabled = {};
+      sortedStates.forEach(function(s) { stateEnabled[s] = true; });
+
+      // Unified visibility function: marker shows only if BOTH its day AND state are enabled
+      function updateVisibility() {
+        allMarkers.forEach(function(marker) {
+          var dayOn = dayEnabled[marker._dateKey];
+          var stateOn = stateEnabled[marker._state];
+          var shouldShow = dayOn && stateOn;
+
+          // Get the day layer this marker belongs to
+          var layer = dayLayers[marker._dateKey];
+          if (shouldShow) {
+            if (!layer.hasLayer(marker)) layer.addLayer(marker);
+          } else {
+            if (layer.hasLayer(marker)) layer.removeLayer(marker);
           }
+        });
+
+        // Make sure each day layer group is on the map (even if empty)
+        sortedDays.forEach(function(d) {
+          if (!map.hasLayer(dayLayers[d])) map.addLayer(dayLayers[d]);
+        });
+      }
+
+      div.addEventListener('change', function(e) {
+        if (e.target.type !== 'checkbox') return;
+        var day = e.target.getAttribute('data-day');
+        var state = e.target.getAttribute('data-state');
+        if (day) {
+          dayEnabled[day] = e.target.checked;
+        } else if (state) {
+          stateEnabled[state] = e.target.checked;
         }
+        updateVisibility();
       });
 
       L.DomEvent.disableClickPropagation(div);
