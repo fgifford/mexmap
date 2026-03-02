@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CJNG Cartel Retaliatory Violence â Nationwide, Feb 22â25, 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; }
+  #header {
+    background: #16213e;
+    padding: 16px 24px;
+    border-bottom: 2px solid #e74c3c;
+  }
+  #header h1 { font-size: 18px; color: #fff; margin-bottom: 4px; }
+  #header p { font-size: 13px; color: #aaa; }
+  #map { width: 100%; height: calc(100vh - 140px); }
+  #legend {
+    background: #16213e;
+    padding: 10px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: 1px solid #333;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot {
+    width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff;
+    display: inline-block; flex-shrink: 0;
+  }
+  .leaflet-popup-content-wrapper {
+    background: #1a1a2e !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #e74c3c !important;
+    border-radius: 8px !important;
+    max-width: 380px;
+  }
+  .leaflet-popup-tip { background: #1a1a2e !important; border: 1px solid #e74c3c !important; }
+  .leaflet-popup-content { font-size: 13px; line-height: 1.5; }
+  .leaflet-popup-content h3 { color: #e74c3c; font-size: 14px; margin-bottom: 6px; }
+  .leaflet-popup-content .phase-tag {
+    display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; margin-bottom: 6px; margin-right: 4px;
+  }
+  .leaflet-popup-content .phase1-tag { background: #2c3e50; color: #ecf0f1; }
+  .leaflet-popup-content .phase2-tag { background: #8e44ad; color: #fff; }
+  .leaflet-popup-content .state-tag {
+    display: inline-block; background: #2c3e50; color: #ecf0f1; padding: 1px 8px;
+    border-radius: 10px; font-size: 11px; margin-bottom: 6px;
+  }
+  .leaflet-popup-content .time { color: #f39c12; font-weight: 600; }
+  .leaflet-popup-content .detail { color: #ccc; margin-top: 4px; }
+  .leaflet-popup-content .coords { color: #888; font-size: 11px; margin-top: 6px; font-style: italic; }
+  #loading {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: #16213e; color: #e74c3c; padding: 20px 30px; border-radius: 8px;
+    border: 1px solid #e74c3c; font-size: 14px; z-index: 9999;
+  }
+  /* Filter controls */
+  .filter-control {
+    background: #16213e; border: 1px solid #444; border-radius: 8px;
+    padding: 12px 16px; font-size: 12px; max-width: 240px;
+    line-height: 1.6; max-height: calc(100vh - 250px); overflow-y: auto;
+  }
+  .filter-control h4 { color: #e74c3c; margin-bottom: 8px; font-size: 13px; }
+  .filter-control label { display: block; cursor: pointer; color: #ccc; }
+  .filter-control label:hover { color: #fff; }
+  .filter-control input[type="checkbox"] { margin-right: 6px; accent-color: #e74c3c; }
+  .state-count { color: #888; font-size: 11px; }
+  .filter-divider { border-top: 1px solid #444; margin: 8px 0; }
+  .filter-section-label { color: #8e44ad; font-weight: 600; font-size: 12px; margin-top: 4px; }
+  /* Phase 2 pulse animation */
+  @keyframes phase2pulse {
+    0% { box-shadow: 0 0 4px #8e44ad88, 0 0 8px #8e44ad44; }
+    50% { box-shadow: 0 0 12px #8e44adcc, 0 0 24px #8e44ad66; }
+    100% { box-shadow: 0 0 4px #8e44ad88, 0 0 8px #8e44ad44; }
+  }
+  .phase2-marker {
+    animation: phase2pulse 2s infinite;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>CJNG Cartel Retaliatory Violence â Nationwide, February 22â25, 2026</h1>
+  <p>252+ narcobloqueos across 20+ states following the killing of "El Mencho" in Tapalpa, Jalisco</p>
+</div>
+
+<div id="map"></div>
+
+<div id="legend">
+  <span style="color:#aaa; font-weight:600;">LEGEND:</span>
+  <div class="legend-item"><span class="legend-dot" style="background:#ff2d2d;"></span> Military operation</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#e74c3c;"></span> Vehicle burning</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#e67e22;"></span> Road blockade</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#f39c12;"></span> Attempted / prevented</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#c0392b;"></span> Armed clash</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9b59b6;"></span> HQ / facility attacked</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#3498db;"></span> Commerce shutdown</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#f1c40f;"></span> Port/transit disruption</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#95a5a6;"></span> Other</div>
+  <span style="color:#666; margin-left:12px;">|</span>
+  <div class="legend-item"><span class="legend-dot" style="background:#8e44ad; border-color:#fff;"></span> <span style="color:#8e44ad;">Phase 2 (Feb 24+)</span></div>
+</div>
+
+<div id="loading">Loading incident data...</div>
+
+<script>
+// Initialize map
+var map = L.map('map', {
+  center: [23.5, -102.0],
+  zoom: 5,
+  zoomControl: true,
+  maxZoom: 18,
+  minZoom: 4
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  maxZoom: 19
+}).addTo(map);
+
+L.control.scale({ imperial: true, metric: true }).addTo(map);
+
+// Color map
+var typeColors = {
+  military_op: '#ff2d2d',
+  burning:     '#e74c3c',
+  blockade:    '#e67e22',
+  attempted:   '#f39c12',
+  armed_clash: '#c0392b',
+  hq_attack:   '#9b59b6',
+  shutdown:    '#3498db',
+  disruption:  '#f1c40f',
+  port:        '#3498db',
+  other:       '#95a5a6'
+};
+
+// Icon factory
+function makeIcon(color, size, isPhase2) {
+  var borderColor = isPhase2 ? '#8e44ad' : 'rgba(255,255,255,0.8)';
+  var borderWidth = isPhase2 ? '3px' : '2px';
+  var extraClass = isPhase2 ? ' phase2-marker' : '';
+  var shadow = isPhase2
+    ? '0 0 8px #8e44ad88, 0 0 20px #8e44ad44'
+    : '0 0 8px ' + color + '88, 0 0 20px ' + color + '44';
+  return L.divIcon({
+    className: 'custom-icon',
+    html: '<div class="' + extraClass + '" style="width:' + size + 'px; height:' + size + 'px; border-radius:50%; background:' + color + '; border:' + borderWidth + ' solid ' + borderColor + '; box-shadow: ' + shadow + ';"></div>',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2]
+  });
+}
+
+function getIcon(item, isPhase2) {
+  var color = typeColors[item.type] || '#95a5a6';
+  var size = item.size === 'large' ? 20 : 14;
+  if (isPhase2) size += 2; // slightly larger for phase 2
+  return makeIcon(color, size, isPhase2);
+}
+
+function makePopup(item, isPhase2) {
+  var html = '<h3>' + item.title + '</h3>';
+  if (isPhase2) {
+    html += '<span class="phase-tag phase2-tag">Phase 2 â Feb 24+</span> ';
+  } else {
+    html += '<span class="phase-tag phase1-tag">Phase 1 â Feb 22â23</span> ';
+  }
+  if (item.state) html += '<span class="state-tag">' + item.state + '</span> ';
+  if (item.time) html += '<div class="time">\u23F1 ' + item.time + '</div>';
+  html += '<div class="detail">' + item.detail + '</div>';
+  if (item.source) html += '<div class="coords">' + item.source + '</div>';
+  return html;
+}
+
+// Store layer groups by state for filtering
+var stateLayers = {};
+var phase2Layer = L.layerGroup().addTo(map);
+var allMarkers = [];
+
+// Fetch data and render
+fetch('incidents.json')
+  .then(function(response) {
+    if (!response.ok) throw new Error('Failed to load incidents.json');
+    return response.json();
+  })
+  .then(function(data) {
+    var el = document.getElementById('loading');
+    if (el) el.remove();
+
+    if (data.meta && data.meta.bounds) {
+      map.fitBounds(data.meta.bounds, { padding: [30, 30] });
+    }
+
+    function addMarker(item, category, isPhase2) {
+      var marker = L.marker([item.lat, item.lng], { icon: getIcon(item, isPhase2) })
+        .bindPopup(makePopup(item, isPhase2));
+
+      if (isPhase2) {
+        marker.addTo(phase2Layer);
+      } else {
+        var state = item.state || category || 'Other';
+        if (!stateLayers[state]) {
+          stateLayers[state] = L.layerGroup().addTo(map);
+        }
+        marker.addTo(stateLayers[state]);
+      }
+      allMarkers.push(marker);
+    }
+
+    // Render Phase 1 incidents
+    if (data.incidents) {
+      data.incidents.forEach(function(inc) { addMarker(inc, 'Incidents', false); });
+    }
+
+    // Render Phase 2 incidents
+    if (data.phase2) {
+      data.phase2.forEach(function(inc) { addMarker(inc, 'Phase 2', true); });
+    }
+
+    // Render shutdowns
+    if (data.shutdowns) {
+      data.shutdowns.forEach(function(s) {
+        s.type = s.type || 'shutdown';
+        s.state = s.state || 'Shutdowns';
+        addMarker(s, 'Shutdowns', false);
+      });
+    }
+
+    // Render disruptions
+    if (data.disruptions) {
+      data.disruptions.forEach(function(d) {
+        addMarker(d, 'Disruptions', false);
+      });
+    }
+
+    // Info box (top right)
+    if (data.meta && data.meta.infoBox) {
+      var info = L.control({ position: 'topright' });
+      info.onAdd = function() {
+        var div = L.DomUtil.create('div');
+        div.style.cssText = 'background:#16213e; color:#e0e0e0; padding:12px 16px; border-radius:8px; border:1px solid #e74c3c; font-size:12px; max-width:280px; line-height:1.5;';
+        var ib = data.meta.infoBox;
+        div.innerHTML =
+          '<strong style="color:#e74c3c;">' + ib.summary + '</strong><br>' +
+          '<span style="color:#aaa;">' + ib.timeRange + '</span><br><br>' +
+          '<span style="color:#ccc;">' + ib.vehicleTypes + '</span><br><br>' +
+          '<span style="color:#f39c12; font-size:11px;">' + ib.status + '</span><br><br>' +
+          '<span style="color:#888; font-size:11px;">' + ib.coordNote + '</span>';
+        return div;
+      };
+      info.addTo(map);
+    }
+
+    // State filter control (top left)
+    var states = Object.keys(stateLayers).sort();
+    var filter = L.control({ position: 'topleft' });
+    filter.onAdd = function() {
+      var div = L.DomUtil.create('div', 'filter-control');
+      var html = '<h4>Filter by State</h4>';
+
+      // Phase 2 toggle at top
+      var p2count = 0;
+      phase2Layer.eachLayer(function() { p2count++; });
+      html += '<label style="color:#8e44ad; font-weight:600;"><input type="checkbox" checked data-layer="phase2" style="accent-color:#8e44ad;"> Phase 2 â Feb 24+ <span class="state-count">(' + p2count + ')</span></label>';
+      html += '<div class="filter-divider"></div>';
+
+      states.forEach(function(state) {
+        var count = 0;
+        stateLayers[state].eachLayer(function() { count++; });
+        html += '<label><input type="checkbox" checked data-state="' + state + '"> ' + state + ' <span class="state-count">(' + count + ')</span></label>';
+      });
+      div.innerHTML = html;
+
+      div.addEventListener('change', function(e) {
+        if (e.target.type === 'checkbox') {
+          var state = e.target.getAttribute('data-state');
+          var layer = e.target.getAttribute('data-layer');
+          if (layer === 'phase2') {
+            if (e.target.checked) { map.addLayer(phase2Layer); }
+            else { map.removeLayer(phase2Layer); }
+          } else if (state) {
+            if (e.target.checked) { map.addLayer(stateLayers[state]); }
+            else { map.removeLayer(stateLayers[state]); }
+          }
+        }
+      });
+
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      return div;
+    };
+    filter.addTo(map);
+  })
+  .catch(function(err) {
+    var el = document.getElementById('loading');
+    if (el) el.textContent = 'Error loading data: ' + err.message;
+    console.error(err);
+  });
+</script>
+
+</body>
+</html>
